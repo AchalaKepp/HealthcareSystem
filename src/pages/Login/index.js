@@ -38,10 +38,10 @@ function Login() {
     if (user) navigate("/");
   }, []);
   return (
-    <div className="flex justify-center items-center h-screen bg-primary">
+    <div className="flex justify-center items-center h-screen bg-primary background-image">
       <Form
         layout="vertical"
-        className="w-400 bg-white p-2"
+        className="w-400 bg-white p-2 shadow-effect"
         onFinish={onFinish}
       >
         <h2 className="uppercase my-1">
@@ -56,7 +56,7 @@ function Login() {
           <input type="password" />
         </Form.Item>
 
-        <button className="contained-btn my-1" type="submit">
+        <button className="contained-btn my-1 w-full" type="submit">
           Login
         </button>
         <Link className="underline" to="/register">

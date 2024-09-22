@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where, getDoc, doc } from "firebase/firestore";
 import firestoreDatabase from "../firebaseConfig";
 import CryptoJS from "crypto-js";
 
@@ -45,6 +45,7 @@ export const LoginUser = async (payload) => {
 
     //decrypt password
     const user = userSnapshots.docs[0].data();
+    user.id = userSnapshots.docs[0].id;
     const bytes = CryptoJS.AES.decrypt(user.password, "immunicare");
     const originalPassword = bytes.toString(CryptoJS.enc.Utf8);
 
@@ -61,3 +62,35 @@ export const LoginUser = async (payload) => {
     return error;
   }
 };
+
+export const GetAllUsers = async () => {
+  try {
+    const users = await getDocs(collection(firestoreDatabase, "users"));
+    return {
+      success: true,
+      data: users.docs.map((doc) => {
+        return {
+          ...doc.data(),
+          id: doc.id,
+        };
+      }),
+    };
+  } catch (error) {
+    return error;
+  }
+};
+
+export const GetUserById = async(id)=> {
+try {
+  const user = await getDoc(doc(firestoreDatabase, "users", id));
+  return{
+    success:true,
+    data: {
+      ...user.data(),
+      id: user.id,
+    },
+  };
+} catch (error) {
+  return error;
+}
+}

@@ -10,9 +10,12 @@ function Register() {
   const dispatch = useDispatch();
   const onFinish = async (values) => {
     try {
-      dispatch(ShowLoader(true))
-      const response = await CreateUser(values);
-      dispatch(ShowLoader(false))
+      dispatch(ShowLoader(true));
+      const response = await CreateUser({
+        ...values,
+        role: "user",
+      });
+      dispatch(ShowLoader(false));
       if (response.success) {
         message.success(response.message);
         navigate("/login");
@@ -20,7 +23,7 @@ function Register() {
         throw new Error(response.message);
       }
     } catch (error) {
-      dispatch(ShowLoader(false))
+      dispatch(ShowLoader(false));
       message.error(error.message);
     }
   };
@@ -30,7 +33,7 @@ function Register() {
     if (user) navigate("/");
   }, []);
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen background-image">
       <Form
         layout="vertical"
         className="w-400 bg-white p-2"
@@ -50,7 +53,7 @@ function Register() {
           <input type="password" />
         </Form.Item>
 
-        <button className="contained-btn my-1" type="submit">
+        <button className="contained-btn my-1 w-full" type="submit">
           REGISTER
         </button>
         <Link className="underline" to="/login">
